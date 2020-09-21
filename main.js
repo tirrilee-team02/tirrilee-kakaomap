@@ -1,3 +1,4 @@
+// 카카오 지도 js
 const main = () => {
   // 리앤 통신
   const button = document.getElementById('send');
