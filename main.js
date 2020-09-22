@@ -7,7 +7,8 @@ const main = () => {
     const lat = document.getElementById('lat').innerText;
     const lng = document.getElementById('lng').innerText;
     const result = `${address},${lat},${lng}`;
-    window.ReactNativeWebView.postMessage(result);
+    console.log(result);
+    // window.ReactNativeWebView.postMessage(result);
   };
   // 좌표 값 가져 오기
   const qs = getQueryStringObject();
