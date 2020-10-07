@@ -12,6 +12,11 @@ const main = () => {
   const qs = getQueryStringObject();
   const lat = qs.lat; // 925641
   const lng = qs.lng; // 1666020
+
+  // 기본값 세팅
+  document.getElementById('lat').innerText = lat;
+  document.getElementById('lng').innerText = lng;
+
   var container = document.getElementById('map');
   var options = {
     center: new kakao.maps.LatLng(lat, lng),
