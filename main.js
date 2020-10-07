@@ -1,18 +1,28 @@
+// 카카오 지도 js
 const main = () => {
   // 리앤 통신
-  const button = document.getElementById('send');
+  const button = document.getElementById("send");
   button.onclick = () => {
-    const address = document.getElementById('result').innerText;
-    const lat = document.getElementById('lat').innerText;
-    const lng = document.getElementById('lng').innerText;
-    const result = `${address},${lat},${lng}`;
-    window.ReactNativeWebView.postMessage(result);
+    var geocoder = new kakao.maps.services.Geocoder();
+    var lat = document.getElementById("lat").innerText;
+    var lng = document.getElementById("lng").innerText;
+    var coord = new kakao.maps.LatLng(lat, lng);
+    var callback = function (result, status) {
+      if (status === kakao.maps.services.Status.OK) {
+        var lat = document.getElementById("lat").innerText;
+        var lng = document.getElementById("lng").innerText;
+        var address = result[0].address.address_name;
+        var result = `${address},${lat},${lng}`;
+        window.ReactNativeWebView.postMessage(result);
+      }
+    };
+    geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
   };
   // 좌표 값 가져 오기
   const qs = getQueryStringObject();
   const lat = qs.lat; // 925641
   const lng = qs.lng; // 1666020
-
+  
   // 기본값 세팅
   document.getElementById('lat').innerText = lat;
   document.getElementById('lng').innerText = lng;
@@ -32,30 +42,21 @@ const main = () => {
     position: map.getCenter(),
   });
   marker.setMap(map);
-  kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+  kakao.maps.event.addListener(map, "click", function (mouseEvent) {
     var latlng = mouseEvent.latLng;
     marker.setPosition(latlng);
-    const lat = latlng.getLat();
-    const lng = latlng.getLng();
-    document.getElementById('lat').innerText = lat;
-    document.getElementById('lng').innerText = lng;
-    var coord = new kakao.maps.LatLng(lat, lng);
-    var callback = function (result, status) {
-      if (status === kakao.maps.services.Status.OK) {
-        var resultDiv = document.getElementById('result');
-        resultDiv.innerHTML = result[0].address.address_name;
-      }
-    };
-    geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+    document.getElementById("lat").innerText = latlng.getLat();
+    document.getElementById("lng").innerText = latlng.getLng();
   });
+
   function getQueryStringObject() {
-    var a = window.location.search.substr(1).split('&');
-    if (a == '') return {};
+    var a = window.location.search.substr(1).split("&");
+    if (a == "") return {};
     var b = {};
     for (var i = 0; i < a.length; ++i) {
-      var p = a[i].split('=', 2);
-      if (p.length == 1) b[p[0]] = '';
-      else b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, ' '));
+      var p = a[i].split("=", 2);
+      if (p.length == 1) b[p[0]] = "";
+      else b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
     }
     return b;
   }
