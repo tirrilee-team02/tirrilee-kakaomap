@@ -10,6 +10,12 @@ const main = () => {
   };
   // 좌표 값 가져 오기
   const qs = getQueryStringObject();
+  const buttonShow = qs.buttonShow;
+
+  if(buttonShow === 'false') {
+    button.hidden = true;
+  }
+
   const lat = qs.lat; // 925641
   const lng = qs.lng; // 1666020
 
